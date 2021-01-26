@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meem-Albi Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+
+    <div id="login-area" >
+        <h1 class="text-center">Welcome to Meem-Albi Bank</h1>
+    
+    <div class="submit-area ">
+        <h4 class="mb-3">Login</h4>
+        <input type="text" class="form-control" placeholder="Enter Your Email">
+        <br>
+        <input type="password" placeholder="Enter Your Password" class="form-control">
+        <br>
+        <button id="login" class="btn btn-success">Enter</button>
+    </div>
+</div>
+
+<div id="transaction-area">
+<div class="row">
+    <div class="col-md-4 ">
+       <div class="deposit status">
+        <h5>Deposit</h5>
+        <h2>$ <span id="currentDeposit">00</span></h2>
+       </div>
+    </div>
+    <div class="col-md-4 ">
+       <div class="withdraw status">
+        <h5>Withdraw</h5>
+        <h2>$ <span id="currentWithdraw">00</span> </h2>
+       </div>
+    </div>
+    <div class="col-md-4 ">
+       <div class="balance status">
+        <h5>Balance</h5>
+        <h2>$ <span id="currentBalance">1240</span></h2>
+       </div>
+    </div>
+    <!-- here we use div in col so that we can resize our div without impacting others cols position. -->
+</div>
+<!-- .row>.col-md-6*2>h4+input+btn.btn.btn-success -->
+<div class="row">
+    <div class="col-md-6">
+      <div class="submit-area">
+        <h4>Deposit</h4>
+        <input id="deposit-amount" type="text" class="form-control" placeholder="$ amount you want to  deposit" >
+        <br>
+        <button class="btn btn-success" id="deposit-button">Deposit</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+        <div class="submit-area">
+            <h4>Withdraw</h4>
+        <input id="withdraw-amount" type="text" class="form-control" placeholder="$ amount you want to withdraw">
+        <br>
+        <button class="btn btn-success" id="withdraw-button">Withdraw</button>
+        </div>
+</div>
+    <!-- if we add submit area in col then two box will get together.and we have to separate.so that we cut all col element and put them into submit area div.  -->
+</div>
+</div>
+
+
+   
+<script>
+    // login button event handler
+    const loginBtn = document.getElementById("login");
+    loginBtn.addEventListener('click',function(){
+        const loginArea = document.getElementById("login-area")
+        loginArea.style.display = "none";
+        const transactionArea = document.getElementById("transaction-area");
+        transactionArea.style.display = "block"
+    })
+// here we used one event listener because we have to collect one click from user and have to various work like hide the login area and display transection area. So those works are codded on the event's function.
+
+// deposit button event handler
+const depositBtn = document.getElementById("deposit-button");
+depositBtn.addEventListener("click",function(){
+const depositAmount = document.getElementById("deposit-amount").value;
+// from user input we use "value" and from html we use "innerText"
+const depositAmountNumber = parseFloat(depositAmount);
+
+const currentDeposit = document.getElementById("currentDeposit").innerText;
+const currentDepositNumber = parseFloat(currentDeposit)
+const totalDeposit = depositAmountNumber + currentDepositNumber;
+
+document.getElementById("currentDeposit").innerText = totalDeposit;
+// this is for write total deposit.
+document.getElementById("deposit-amount").value = "" ;
+// this is for clear the value after submitting.
+
+const currentBalance = document.getElementById("currentBalance").innerText;
+const currentBalanceNumber = parseFloat(currentBalance);
+const totalBalance = currentBalanceNumber + depositAmountNumber;
+
+document.getElementById("currentBalance").innerText = totalBalance;
+})
+
+// withdraw button event handler -by me
+const withdrawBtn = document.getElementById("withdraw-button");
+withdrawBtn.addEventListener("click",function(){
+    // step-1:input value
+    const withdrawAmount = document.getElementById("withdraw-amount").value;
+    const withdrawAmountNumber = parseFloat(withdrawAmount);
+// step-2 : current value floating
+    const currentWithdraw = document.getElementById("currentWithdraw").innerText;
+    const currentWithdrawNumber = parseFloat(currentWithdraw);
+    // step-3:adding all
+    const totalWithdraw =currentWithdrawNumber + withdrawAmountNumber;
+    // step-4: write on  withdraw amount.
+    document.getElementById("currentWithdraw").innerText =totalWithdraw;
+    document.getElementById("withdraw-amount").value = "" ;
+// this is for clear the value after submitting.
+    // step-4:floating current balance
+    const currentBalance = document.getElementById("currentBalance").innerText;
+const currentBalanceNumber = parseFloat(currentBalance);
+// step-5:minus withdraw amount from total balance
+const totalBalance = currentBalanceNumber - withdrawAmountNumber;
+// step-6: write on balance
+document.getElementById("currentBalance").innerText = totalBalance;
+
+
+
+})
+</script>
+</body>
+</html>
