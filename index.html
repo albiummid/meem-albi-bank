@@ -15,9 +15,9 @@
     
     <div class="submit-area ">
         <h4 class="mb-3">Login</h4>
-        <input type="text" class="form-control" placeholder="Enter Your Email">
+        <input id="input-email" type="text" class="form-control" placeholder="Enter Your Email">
         <br>
-        <input type="password" placeholder="Enter Your Password" class="form-control">
+        <input id="input-password" type="password" placeholder="Enter Your Password" class="form-control">
         <br>
         <button id="login" class="btn btn-success">Enter</button>
     </div>
@@ -28,13 +28,13 @@
     <div class="col-md-4 ">
        <div class="deposit status">
         <h5>Deposit</h5>
-        <h2>$ <span id="current-deposit">00</span></h2>
+        <h2>$ <span id="current-deposit">0</span></h2>
        </div>
     </div>
     <div class="col-md-4 ">
        <div class="withdraw status">
         <h5>Withdraw</h5>
-        <h2>$ <span id="current-withdraw">00</span> </h2>
+        <h2>$ <span id="current-withdraw">0</span> </h2>
        </div>
     </div>
     <div class="col-md-4 ">
@@ -71,31 +71,72 @@
    
 <script>
     // login button event handler
-    const loginBtn = document.getElementById("login");
-    loginBtn.addEventListener('click',function(){
-        const loginArea = document.getElementById("login-area")
+    document.getElementById("login").addEventListener('click',function(){
+        
+        const email = ["meemalbi@gmail.com","tanvir","Hassan" ,"meem","albi"]
+       const checkEmail = checker(email,"input-email");
+       const password = ["albimeem","meemalbi","meemismylove","albismyjan"]
+       checkPassword = checker(password,"input-password");
+// 
+        if (checkEmail == true && checkPassword == true ){
+        const loginArea = document.getElementById("login-area");
         loginArea.style.display = "none";
         const transactionArea = document.getElementById("transaction-area");
-        transactionArea.style.display = "block"
+        transactionArea.style.display = "block";
+        // here break is used for stoping funtion when required value checked
+        }
+        else{
+            alert("wrong email or password .try again.")
+        }
+    
     })
+
+
+    // function checker
+    function checker(checkFor,checkForInputId){
+        const input = document.getElementById(checkForInputId).value;
+            let index = checkFor.indexOf(input);
+        if(index == -1){
+            return false;
+        }
+        else{
+            return true;
+        } 
+    }
+
     // bankHandler function.
 function bankHandler(task){
-    const depositAmount = document.getElementById(task+"-amount").value;
-const depositAmountNumber = parseFloat(depositAmount);
-const currentDeposit = document.getElementById("current-"+ task).innerText;
-const currentDepositNumber = parseFloat(currentDeposit)
-const totalDeposit = currentDepositNumber + depositAmountNumber;
-document.getElementById("current-" + task).innerText = totalDeposit;
+    const taskAmount = document.getElementById(task+"-amount").value;
+const taskAmountNumber = parseFloat(taskAmount);
+const currentTask = document.getElementById("current-"+ task).innerText;
+const currentTaskNumber = parseFloat(currentTask)
+let totalTask = currentTaskNumber;
+if (taskAmountNumber >= 0){
+    totalTask = currentTaskNumber + taskAmountNumber;
+}
+else{
+    alert("Amount Error!!! Currency can't be negative!")
+}
+document.getElementById("current-" + task).innerText = totalTask;
 document.getElementById(task + "-amount").value = "" ;
 const currentBalance = document.getElementById("currentBalance").innerText;
 const currentBalanceNumber = parseFloat(currentBalance);
-// const totalBalance = currentBalanceNumber + depositAmountNumber;
-let totalBalance = 0;
-if ( task == 'deposit'){
-    totalBalance = currentBalanceNumber + depositAmountNumber;
+let totalBalance = currentBalanceNumber;
+
+
+if ( task == 'deposit' && taskAmountNumber > 0){
+    totalBalance = currentBalanceNumber + taskAmountNumber;
 }
-if (task == 'withdraw'){
-    totalBalance = currentBalanceNumber - depositAmountNumber;
+if (task == 'withdraw' && taskAmountNumber > 0 ){
+    if(currentBalanceNumber >= taskAmountNumber ){
+        totalBalance = currentBalanceNumber - taskAmountNumber;
+    }
+    else if( currentBalanceNumber < taskAmountNumber ){
+        alert("Insufficient balance! Please Deposit sufficient $")
+//         const shortBalance = taskAmountNumber - currentBalanceNumber;
+//          console.log(shortBalance);
+        //   how to add const in alert.   
+    }
 }
 document.getElementById("currentBalance").innerText = totalBalance;
 }
