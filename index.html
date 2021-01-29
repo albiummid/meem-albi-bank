@@ -28,13 +28,13 @@
     <div class="col-md-4 ">
        <div class="deposit status">
         <h5>Deposit</h5>
-        <h2>$ <span id="currentDeposit">00</span></h2>
+        <h2>$ <span id="current-deposit">00</span></h2>
        </div>
     </div>
     <div class="col-md-4 ">
        <div class="withdraw status">
         <h5>Withdraw</h5>
-        <h2>$ <span id="currentWithdraw">00</span> </h2>
+        <h2>$ <span id="current-withdraw">00</span> </h2>
        </div>
     </div>
     <div class="col-md-4 ">
@@ -52,7 +52,7 @@
         <h4>Deposit</h4>
         <input id="deposit-amount" type="text" class="form-control" placeholder="$ amount you want to  deposit" >
         <br>
-        <button class="btn btn-success" id="deposit-button">Deposit</button>
+        <button class="btn btn-success" onclick="bankHandler('deposit')">Deposit</button>
       </div>
     </div>
     <div class="col-md-6">
@@ -60,7 +60,7 @@
             <h4>Withdraw</h4>
         <input id="withdraw-amount" type="text" class="form-control" placeholder="$ amount you want to withdraw">
         <br>
-        <button class="btn btn-success" id="withdraw-button">Withdraw</button>
+        <button onclick="bankHandler('withdraw')" class="btn btn-success" >Withdraw</button>
         </div>
 </div>
     <!-- if we add submit area in col then two box will get together.and we have to separate.so that we cut all col element and put them into submit area div.  -->
@@ -78,57 +78,27 @@
         const transactionArea = document.getElementById("transaction-area");
         transactionArea.style.display = "block"
     })
-// here we used one event listener because we have to collect one click from user and have to various work like hide the login area and display transection area. So those works are codded on the event's function.
-
-// deposit button event handler
-const depositBtn = document.getElementById("deposit-button");
-depositBtn.addEventListener("click",function(){
-const depositAmount = document.getElementById("deposit-amount").value;
-// from user input we use "value" and from html we use "innerText"
+    // bankHandler function.
+function bankHandler(task){
+    const depositAmount = document.getElementById(task+"-amount").value;
 const depositAmountNumber = parseFloat(depositAmount);
-
-const currentDeposit = document.getElementById("currentDeposit").innerText;
+const currentDeposit = document.getElementById("current-"+ task).innerText;
 const currentDepositNumber = parseFloat(currentDeposit)
-const totalDeposit = depositAmountNumber + currentDepositNumber;
-
-document.getElementById("currentDeposit").innerText = totalDeposit;
-// this is for write total deposit.
-document.getElementById("deposit-amount").value = "" ;
-// this is for clear the value after submitting.
-
+const totalDeposit = currentDepositNumber + depositAmountNumber;
+document.getElementById("current-" + task).innerText = totalDeposit;
+document.getElementById(task + "-amount").value = "" ;
 const currentBalance = document.getElementById("currentBalance").innerText;
 const currentBalanceNumber = parseFloat(currentBalance);
-const totalBalance = currentBalanceNumber + depositAmountNumber;
-
+// const totalBalance = currentBalanceNumber + depositAmountNumber;
+let totalBalance = 0;
+if ( task == 'deposit'){
+    totalBalance = currentBalanceNumber + depositAmountNumber;
+}
+if (task == 'withdraw'){
+    totalBalance = currentBalanceNumber - depositAmountNumber;
+}
 document.getElementById("currentBalance").innerText = totalBalance;
-})
-
-// withdraw button event handler -by me
-const withdrawBtn = document.getElementById("withdraw-button");
-withdrawBtn.addEventListener("click",function(){
-    // step-1:input value
-    const withdrawAmount = document.getElementById("withdraw-amount").value;
-    const withdrawAmountNumber = parseFloat(withdrawAmount);
-// step-2 : current value floating
-    const currentWithdraw = document.getElementById("currentWithdraw").innerText;
-    const currentWithdrawNumber = parseFloat(currentWithdraw);
-    // step-3:adding all
-    const totalWithdraw =currentWithdrawNumber + withdrawAmountNumber;
-    // step-4: write on  withdraw amount.
-    document.getElementById("currentWithdraw").innerText =totalWithdraw;
-    document.getElementById("withdraw-amount").value = "" ;
-// this is for clear the value after submitting.
-    // step-4:floating current balance
-    const currentBalance = document.getElementById("currentBalance").innerText;
-const currentBalanceNumber = parseFloat(currentBalance);
-// step-5:minus withdraw amount from total balance
-const totalBalance = currentBalanceNumber - withdrawAmountNumber;
-// step-6: write on balance
-document.getElementById("currentBalance").innerText = totalBalance;
-
-
-
-})
+}
 </script>
 </body>
 </html>
